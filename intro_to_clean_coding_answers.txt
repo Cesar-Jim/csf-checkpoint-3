@@ -1,0 +1,248 @@
+Question 1: In your own words, explain what clean code is and why it is important.
+
+A.
+First of all I think that clean code could be very subjective, what could be clean code for one person couldn't be for another, 
+however there are some guidelines, ideas and best practices that make somehow easier to distinguish a well structured neatly written code. 
+
+Some of these conventions around clean code practices are about making code to have better readability, which will make it easier to understand not only
+what problems are solved but also the flow of the entire application; how the different modules, objects, functions and modules collaborate with each other;
+what is the role and responsibility of each class; what type of data each variable holds and why.
+
+Why clean code is important?
+
+First and more importantly, if you write clean code, you will definitely help your future self and co-workers. Maintaining the application would be easier
+and cheaper. It would be also easier to estimate time needed for changes or fixes. Bugs can be detected easier and quicker. In regards to testing, it helps
+to develop test cases and define a correct testing scope. At the end of the day, writting clean code makes it more enjoyable to work on the code.
+
+***
+
+Question 2: Read this article about Toyota and their use of bad code. Although you may not yet understand all of the topics discussed, think about another 
+commonly used object that relies on computers and explain what would happen if the code was not created to an acceptable standard.
+
+A.
+After reading the article I started to imagine what would happen if something of this nature occured on an airplane? A total disaster!
+From the article, for me it was obvious that Toyota, with the intention of reaching short development times and considerably reduce their costs they 
+did what they did. It was all about that I guess because of competition against other automakers and to win the development race. 
+
+Today, there is software everywhere! from a toaster to a space shuttle and of course, a bug in a toaster could in the worst case probably only burn a slice
+of bread or not tost it at all. But a bug in a space shuttle's embedded safety or engine control module???
+
+That is why testing and a good selection of test cases and a correct testing scope definition is so important.
+
+***
+
+Question 3: Would you consider the following to be clean code? Explain why or why not. If not, refactor the code.
+
+A.
+The code presented in this question does NOT follow clean code best practices because it has comments for every line and the naming convention 
+it uses is confusing. Refactoring the pseudocode as follows would result in cleaner and clearer code:
+
+FUNCTION convertTemperature (value, scale)
+   IF scale = "Fahrenheit"
+      SET conversion to (value - 32) * (5 / 9)
+      PRINT conversion " Fahrenheit degrees"
+   ELSE IF scale = "Celsius"
+      SET conversion to value * 1.8 + 32
+      PRINT conversion " Celsius degrees"
+   END IF
+END FUNCTION
+
+***
+
+Question 4: Would you consider the following to be clean code? Explain why or why not. If not, refactor the code.
+
+A.
+I would say this code is clean because it is very easy to understand what it does and how it does it. Naming looks also good and pertinent.
+Very easy to follow overall.
+
+***
+
+Question 5: Using pseudocode, refactor the code for the following examples using the principles you have learned in this checkpoint.
+
+a) The following function prints the subtotal of a customer's transaction and receives payment accordingly.
+
+Fix: DRY principle. CALL getpayment RETURNING amount was repeated
+
+FUNCTION checkOutCustomer(subTotal, discountRate, paymentType)
+   PRINT "Your total due is: " + subtotal * discountRate + (subTotal * tax)
+   CALL getPayment RETURNING amount
+
+   IF paymentType = 'CASH' THEN
+      PRINT "Change due: " + amount - subTotal * discountRate + (subTotal * tax)
+   ELSE IF paymentType = 'CREDIT CARD' THEN
+      PRINT "Your credit card has been charged: " + subTotal * discountRate + (subTotal * tax)
+   END IF
+
+END FUNCTION
+
+***
+
+b) The following function checks out a book if there are no issues with the guest's account.
+
+Fix: NESTING principle. IF nesting 3 levels deep. As a best practice, it shouldn't be deeper than 2 levels.
+
+IF guest.accountActive THEN
+   IF NOT(guest.hasOverdueBooks) AND (guest.outstandingFees = 0) THEN
+      APPEND book to guest.books
+      SET book.status to "Checked Out"
+      PRINT "Your books have been issued."     
+   END IF
+ELSE
+   PRINT "Unable to check out book."
+END IF
+
+END FUNCTION
+
+***
+
+c) The following class is a code snippet that should support the transactions a customer can perform at an ATM.
+
+Fix: Single responsibility principle.
+
+CLASS BankAccount
+
+   FUNCTION displayBalance
+      PRINT balance
+   END FUNCTION
+
+END CLASS
+
+
+CLASS AccountMovements(amount, balance)
+  
+   FUNCTION deposit(amount)
+      SET balance to balance + amount
+   END FUNCTION
+
+   FUNCTION withdraw(amount)
+      IF balance > amount THEN
+         SET balance to balance - amount
+      END IF
+   END FUNCTION
+   
+END CLASS
+
+
+CLASS CustomerOffers(customer)
+
+   FUNCTION creditCardOffer
+      IF NOT(customer.hasCreditCard) THEN
+         CALL offerCreditCard
+      END IF
+   END FUNCTION
+
+   FUNCTION checkStatus
+      IF NOT(customer.hasCheckingAccount) THEN
+         CALL offerCheckingAccount
+      END IF
+   END FUNCTION
+
+END CLASS
+
+ ....
+ ....
+ ....
+
+END
+
+***
+
+PROGRAMMING QUESTIONS:
+
+Question 6: Square Given an array of integers, find out whether the sum of the integers is a perfect square. 
+If it is a perfect square, return the square root, otherwise return the sum.
+
+Code:
+
+class PerfectSquareIdentifier {
+   constructor(numbers) {
+
+      this.numbers = numbers;
+   }
+
+   testNumsSequence() {
+      let sum = this.numbers.reduce((accumulator, currentValue) => accumulator + currentValue);
+
+      this.isPerfectSquare(sum);
+   }
+
+   isPerfectSquare(sum) {
+      if (sum % Math.sqrt(sum) === 0) {
+         console.log(`The square root of ${sum} is ${Math.sqrt(sum)}.`);
+      } else {
+         console.log(`Sorry, ${sum} is not a perfect square.`)
+      }
+   }
+}
+
+
+***
+Question 7: Duplicate Given an array of integers, find out whether the array contains any duplicate elements. 
+The function should return true if any value appears at least twice in the array, and false if every element is distinct.
+
+Code:
+
+function containsDuplicates(numSequence) {
+   var isDuplicate = false;
+
+   if (numSequence.length > 1) {
+
+      for (let leftNum = 0; leftNum < numSequence.length - 1; leftNum++) {
+         for (let rightNum = leftNum + 1; rightNum < numSequence.length; rightNum++) {
+            if (numSequence[leftNum] === numSequence[rightNum]) isDuplicate = true;
+         }
+      }
+
+      return isDuplicate;
+
+   } else {
+      console.log(`At least two numbers are required to check for duplicity.`);
+      return false;
+   }
+}
+
+***
+
+EXTRA CREDIT
+Question 8: Anagram: An anagram is a word, phrase, or name formed by rearranging the letters of another word. 
+For example, spar can be formed from rasp. Given two strings, stringOne and stringTwo, determine if stringOne is an anagram of stringTwo. 
+Assume that the strings contain only lowercase letters and do not worry about case-sensitivity. Hint: Your first task will be to convert 
+the strings to arrays.
+
+Code:
+
+class AnagramIdentifier {
+   constructor(stringOne, stringTwo) {
+      this.stringOne = stringOne;
+      this.stringTwo = stringTwo;
+   }
+
+   isAnagram(stringOne, stringTwo) {
+      let convertedStringOne = [...stringOne];
+      let convertedStringTwo = [...stringTwo];
+
+      this.checkSimilarity(convertedStringOne, convertedStringTwo);
+   }
+
+
+   checkSimilarity(convertedStringOne, convertedStringTwo) {
+      let isAnagram = false;
+
+      if (convertedStringOne.length !== convertedStringTwo.length) {
+         console.log(isAnagram);
+      } else {
+         var numOfCharacters = convertedStringOne.length;
+
+         for (let i = 0; i < numOfCharacters; i++) {
+            for (let j = 0; j < numOfCharacters; j++) {
+               if (convertedStringOne[0] === convertedStringTwo[j]) {
+                  convertedStringOne.shift();
+                  convertedStringTwo.splice(j, 1);
+                  convertedStringOne.length === 0 ? isAnagram = true : isAnagram = false;
+               }
+            }
+         }
+         console.log(isAnagram);
+      }
+   }
+}
